@@ -5,7 +5,9 @@ description = "Default template for PDM package"
 authors = [
     {name = "EdwardTheLegend", email = "40855056+EdwardTheLegend@users.noreply.github.com"},
 ]
-dependencies = []
+dependencies = [
+    "argparse>=1.4.0",
+]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "MIT"}
@@ -18,3 +20,6 @@ distribution = false
 dev = [
     "ruff>=0.4.8",
 ]
+
+[tool.ruff]
+line-length = 120

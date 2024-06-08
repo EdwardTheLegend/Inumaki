@@ -5,7 +5,17 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:42dff1c78817a1170adb21a27ab89ade8a938cc32fd6565543b2e953926dc53d"
+content_hash = "sha256:acd8d3f4bee34dd21872ed869a5d49f98407940284e2e09df4dc53c371d1483d"
+
+[[package]]
+name = "argparse"
+version = "1.4.0"
+summary = "Python command-line parsing library"
+groups = ["default"]
+files = [
+    {file = "argparse-1.4.0-py2.py3-none-any.whl", hash = "sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314"},
+    {file = "argparse-1.4.0.tar.gz", hash = "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"},
+]
 
 [[package]]
 name = "ruff"
