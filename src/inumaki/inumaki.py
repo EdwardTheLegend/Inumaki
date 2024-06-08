@@ -9,10 +9,8 @@ parser.add_argument("file", type=str, help="Inumaki source code file", nargs="?"
 
 args = parser.parse_args()
 
-if args.file:
-    with open(args.file, "r") as file:
-        text = file.read()
 
+def run(text):
     lexer = Lexer(text)
     lexer.scan_tokens()
 
@@ -21,6 +19,13 @@ if args.file:
 
     interpreter = Interpreter(parser.ast)
     interpreter.interpret()
+
+
+if args.file:
+    with open(args.file, "r") as file:
+        text = file.read()
+
+    run(text)
 else:
     while True:
         try:
@@ -28,11 +33,4 @@ else:
         except (EOFError, KeyboardInterrupt):
             break
 
-        lexer = Lexer(text)
-        lexer.scan_tokens()
-
-        parser = Parser(lexer.tokens)
-        parser.parse()
-
-        interpreter = Interpreter(parser.ast)
-        interpreter.interpret()
+        run(text)
