@@ -10,7 +10,7 @@ These are the phrases which will be used in place of normal keywords in this lan
 | --- | ---| --- |
 | Salmon | Affirmation | True (Boolean) | 
 | Bonito Flakes | Negation | False (Boolean) |
-| Kelp | Greeting |  |
+| Kelp | Greeting | Comments |
 | Mustard Leaf | Concern/Worry | |
 | Salmon Roe | "Well, well" | |
 | Caviar | Expletive | Exceptions |

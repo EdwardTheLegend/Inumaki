@@ -158,7 +158,7 @@ class Lexer:
                     self.tokens.append(Token(TOKENS["Not"], "not", "not", self.line, self.column))
                 else:
                     self.start_identifier(char)
-            case "?":  # comments
+            case "Kelp":  # comments
                 while self.peek() != "\n":
                     self.advance()
             case " " | "\t" | "\r":
