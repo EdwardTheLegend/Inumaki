@@ -5,24 +5,28 @@ Programming language made for [Hack Club's langjam](https://langjam.hackclub.com
 # Vocabulary
 These are the phrases which will be used in place of normal keywords in this language. Not all of them will be used and I'll try to use them in line with their original meaning to have some sense come out of all this.
 
-## Safe Words
-- Salmon
-- Fish Flakes
-- Kelp
-- Mustard Leaf
-- Salmon Roe
-- Caviar
-- Spicy Cod Roe
-- Tuna
-- Tuna Mayo
+## Safe Words 
+| Word | Original use | Language use |
+| --- | ---| --- |
+| Salmon | Affirmation | True (Boolean) | 
+| Fish Flakes | Negation | False (Boolean) |
+| Kelp | Greeting |  |
+| Mustard Leaf | Concern/Worry | |
+| Salmon Roe | "Well, well" | |
+| Caviar | Expletive | Exceptions |
+| Spicy Cod Roe | Motivational | |
+| Tuna | Call attention | |
+| Tuna Mayo | Do something | |
 
 ## Cursed Speech
-- Explode
-- Twist
-- Crush
-- Plummet
-- Stop
-- Sleep
-- Return
-- Run
-- Blast
+| Word | Language use|
+| --- | --- |
+| Explode | |
+| Twist | |
+| Crush | |
+| Plummet | |
+| Stop | |
+| Sleep | |
+| Return | Return from function |
+| Run | |
+| Blast | |
