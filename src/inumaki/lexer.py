@@ -47,12 +47,12 @@ chars = {
 
 KEYWORDS = [
     "Salmon",
-    "Bonito_Flakes",
+    "Bonito_Flakes",  # Booleans
+    "Tuna",  # variables
+    "Tuna_Mayo",  # functions
+    "Mustard_Leaf",  # conditionals
     # TODO
-    # variables
-    # functions
     # loops
-    # conditionals
 ]
 
 
