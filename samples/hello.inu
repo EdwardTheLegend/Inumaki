@@ -2,10 +2,12 @@ Kelp <-- this indicates a comment
 Kelp this file is an example of the Inumaki language features
 
 Kelp variables 
-TODO
+Tuna Seaweed Tuna Salmon Kelp Salmon is true and Bonito_Flakes is false
 
 Kelp conditionals 
-TODO
+Mustard_Leaf ( 1 == 1 And Seaweed ) {
+    Tuna_Tuna("This will print")
+}
 
 Kelp for loops 
 TODO
@@ -14,7 +16,10 @@ Kelp while loops
 TODO
 
 Kelp functions 
-TODO
+Tuna_Mayo Cod (Eel, Chicken) {
+    Tuna_Tuna(Eel)
+    Tuna_Tuna(Chicken)
+}
 
 Kelp builtin functions
-Tuna_Mayo("Hello, World!") Kelp prints "Hello, World!" to the console
+Tuna_Tuna("Hello, World!") Kelp prints "Hello, World!" to the console
