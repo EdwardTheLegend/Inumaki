@@ -1,8 +1,8 @@
 import argparse
 
-from .interpreter import Interpreter
-from .lexer import Lexer
-from .parser import Parser
+from inu_interpreter import Interpreter
+from inu_lexer import Lexer
+from inu_parser import Parser
 
 parser = argparse.ArgumentParser(prog="inumaki", description="Inumkai programming language")
 parser.add_argument("file", type=str, help="Inumaki source code file", nargs="?", default=None)

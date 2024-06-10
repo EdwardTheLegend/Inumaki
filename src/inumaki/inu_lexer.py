@@ -43,6 +43,11 @@ chars = {
     "-": TOKENS["Minus"],
     "*": TOKENS["Asterisk"],
     "/": TOKENS["Slash"],
+    "<": TOKENS["Lt"],
+    "<=": TOKENS["Lte"],
+    ">": TOKENS["Gt"],
+    ">=": TOKENS["Gte"],
+    "==": TOKENS["Equiv"],
 }
 
 KEYWORDS = [
@@ -114,10 +119,8 @@ class Lexer:
             identifier += self.advance()
 
         if identifier in KEYWORDS:
-            if identifier == KEYWORDS["Salmon"] or identifier == KEYWORDS["Bonito_Flakes"]:
-                self.tokens.append(
-                    Token(TOKENS["Boolean"], identifier, identifier == KEYWORDS["Salmon"], self.line, column)
-                )
+            if identifier == "Salmon" or identifier == "Bonito_Flakes":
+                self.tokens.append(Token(TOKENS["Boolean"], identifier, identifier == "Salmon", self.line, column))
             else:
                 self.tokens.append(Token(identifier, identifier, identifier, self.line, column))
         else:
@@ -134,6 +137,11 @@ class Lexer:
                     self.tokens.append(Token(chars[char + "="], char + "=", char + "=", self.line, self.column))
                 else:
                     self.tokens.append(Token(chars[char], char, char, self.line, self.column))
+            case "=":
+                if self.match("="):
+                    self.tokens.append(Token(TOKENS["Equiv"], "==", "==", self.line, self.column))
+                else:
+                    raise Exception(f"Invalid character '=' at line {self.line}")
             case "'" | '"':
                 string = ""
                 while self.peek() != char:
@@ -158,9 +166,10 @@ class Lexer:
                     self.tokens.append(Token(TOKENS["Not"], "not", "not", self.line, self.column))
                 else:
                     self.start_identifier(char)
-            case "Kelp":  # comments
-                while self.peek() != "\n":
-                    self.advance()
+            case "K":  # comments
+                if self.match_word("elp "):
+                    while self.peek() != "\n":
+                        self.advance()
             case " " | "\t" | "\r":
                 pass
             case "\n":
