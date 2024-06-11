@@ -60,6 +60,18 @@ KEYWORDS = [
     # loops
 ]
 
+CURSED_WORDS = [
+    "EXPLODE",
+    "TWIST",
+    "CRUSH",
+    "PLUMMET",
+    "STOP",
+    "SLEEP",
+    "RETURN",
+    "RUN",
+    "BLAST",
+]
+
 
 class Token:
     def __init__(self, type, value, content, line, column):
@@ -68,6 +80,8 @@ class Token:
         self.content = content
         self.line = line
         self.column = column
+
+        self.cursed = self.value.upper() in CURSED_WORDS
 
     def __str__(self):
         return self.value
