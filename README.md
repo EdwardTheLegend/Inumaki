@@ -22,9 +22,9 @@ These are the phrases which will be used in place of normal keywords in this lan
 | Word | Language use|
 | --- | --- |
 | Explode | |
-| Twist | |
+| Twist | For loops |
 | Crush | |
-| Plummet | |
+| Plummet | While loops |
 | Stop | |
 | Sleep | |
 | Return | Return from function |

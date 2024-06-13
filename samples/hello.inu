@@ -10,10 +10,15 @@ Mustard_Leaf ( 1 == 1 And Seaweed ) {
 }
 
 Kelp for loops 
-TODO
+Twist (Tuna = 0; Tuna < 10; Tuna++) {
+    Tuna_Tuna(Seaweed)
+}
 
 Kelp while loops 
-TODO
+Plummet (Seaweed) {
+    Tuna_Tuna("This will print")
+    Seaweed = false
+}
 
 Kelp functions 
 Tuna_Mayo Cod (Eel, Chicken) {
