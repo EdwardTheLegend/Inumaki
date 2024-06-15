@@ -28,3 +28,28 @@ class Parser:
                 return self.tokens[self.pos - 1]
 
         raise Exception(f"Expected {type}, got {peek_type}")
+
+    def parse(self):
+        while self.peek():
+            self.ast.append(self.parse_statement())
+        return self.ast
+
+    def parse_statement(self):
+        next = self.peek()
+
+        if next.type != TOKENS["Keyword"]:
+            raise Exception(f"Expected keyword, got {next.type}")
+
+        match next.value:
+            case "Tuna":
+                return self.variable_stmt()
+            case "Tuna_Mayo":
+                return self.function_stmt()
+            case "Return":
+                return self.return_stmt()
+            case "Mustard_Leaf":
+                return self.conditional_stmt()
+            case "Twist":
+                return self.for_stmt()
+            case "Plummet":
+                return self.while_stmt()

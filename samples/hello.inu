@@ -10,14 +10,14 @@ Mustard_Leaf ( 1 == 1 And Seaweed ) {
 }
 
 Kelp for loops 
-Twist (Tuna = 0; Tuna < 10; Tuna++) {
+Twist (Tuna Rice Tuna 0; Rice < 10; Tuna Rice Tuna + 1) {
     Tuna_Tuna(Seaweed)
 }
 
 Kelp while loops 
 Plummet (Seaweed) {
     Tuna_Tuna("This will print")
-    Seaweed = false
+    Tuna Seaweed Tuna Bonito_Flakes
 }
 
 Kelp functions 

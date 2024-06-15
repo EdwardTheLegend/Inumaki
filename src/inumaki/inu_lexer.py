@@ -26,7 +26,10 @@ TOKENS = {
     "Minus": "Minus",
     "Asterisk": "Asterisk",
     "Slash": "Slash",
+    "Semicolon": "Semicolon",
     "EOF": "EOF",
+    "Salmon": True,
+    "Bonito_Flakes": False,
 }
 
 chars = {
@@ -48,16 +51,16 @@ chars = {
     ">": TOKENS["Gt"],
     ">=": TOKENS["Gte"],
     "==": TOKENS["Equiv"],
+    ";": TOKENS["Semicolon"],
 }
 
 KEYWORDS = [
-    "Salmon",
-    "Bonito_Flakes",  # Booleans
     "Tuna",  # variables
     "Tuna_Mayo",  # functions
+    "Return",
     "Mustard_Leaf",  # conditionals
-    # TODO
-    # loops
+    "Twist",  # for loop
+    "Plummet",  # while loop
 ]
 
 CURSED_WORDS = [
@@ -126,25 +129,34 @@ class Lexer:
             self.advance()
         return True
 
-    def start_identifier(self, char):
-        identifier = char
+    def start_word(self, char):
+        word = char
         column = self.column
         while self.peek().isalnum() or self.peek() == "_":
-            identifier += self.advance()
+            word += self.advance()
 
-        if identifier in KEYWORDS:
-            if identifier == "Salmon" or identifier == "Bonito_Flakes":
-                self.tokens.append(Token(TOKENS["Boolean"], identifier, identifier == "Salmon", self.line, column))
-            else:
-                self.tokens.append(Token(identifier, identifier, identifier, self.line, column))
+        match word:
+            case "Or" | "Not" | "And":
+                self.tokens.append(Token(TOKENS[word], word, word, self.line, column))
+                return
+            case "Kelp":
+                while self.peek() != "\n":
+                    self.advance()
+                return
+            case "Salmon" | "Bonito_Flakes":
+                self.tokens.append(Token(TOKENS["Boolean"], word, word == "Salmon", self.line, column))
+                return
+
+        if word in KEYWORDS:
+            self.tokens.append(Token(TOKENS["Keyword"], word, word, self.line, column))
         else:
-            self.tokens.append(Token(TOKENS["Identifier"], identifier, identifier, self.line, column))
+            self.tokens.append(Token(TOKENS["Identifier"], word, word, self.line, column))
 
     def scan_token(self):
         char = self.advance()
 
         match char:
-            case "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | "+" | "-" | "*" | "/":
+            case "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | "+" | "-" | "*" | "/" | ";":
                 self.tokens.append(Token(chars[char], char, char, self.line, self.column))
             case "<" | ">":
                 if self.match("="):
@@ -165,25 +177,6 @@ class Lexer:
 
                 self.advance()  # closing quote
                 self.tokens.append(Token(TOKENS["String"], string, string, self.line, self.column))
-            case "o":
-                if self.match_word("r "):
-                    self.tokens.append(Token(TOKENS["Or"], "or", "or", self.line, self.column))
-                else:
-                    self.start_identifier(char)
-            case "a":
-                if self.match_word("nd "):
-                    self.tokens.append(Token(TOKENS["And"], "and", "and", self.line, self.column))
-                else:
-                    self.start_identifier(char)
-            case "n":
-                if self.match_word("ot "):
-                    self.tokens.append(Token(TOKENS["Not"], "not", "not", self.line, self.column))
-                else:
-                    self.start_identifier(char)
-            case "K":  # comments
-                if self.match_word("elp "):
-                    while self.peek() != "\n":
-                        self.advance()
             case " " | "\t" | "\r":
                 pass
             case "\n":
@@ -196,8 +189,8 @@ class Lexer:
                         number += self.advance()
 
                     self.tokens.append(Token(TOKENS["Number"], number, float(number), self.line, self.column))
-                elif char.isalpha() or char == "_":
-                    self.start_identifier(char)
+                elif char.isalpha() or char == "_":  # Gather the whole word
+                    self.start_word(char)
                 else:
                     raise Exception(f"Invalid character '{char}' at line {self.line}")
 
@@ -205,6 +198,6 @@ class Lexer:
         while self.peek():
             self.scan_token()
 
-        self.tokens.append(Token(TOKENS["EOF"], None, None, self.line, self.column))
+        self.tokens.append(Token(TOKENS["EOF"], "EOF", None, self.line, self.column))
 
         return self.tokens
