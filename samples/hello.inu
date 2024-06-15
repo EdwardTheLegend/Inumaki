@@ -5,25 +5,29 @@ Kelp variables
 Tuna Seaweed Tuna Salmon Kelp Salmon is true and Bonito_Flakes is false
 
 Kelp conditionals 
-Mustard_Leaf ( 1 == 1 And Seaweed ) {
+Mustard_Leaf Tuna 1 == 1 And Seaweed Tuna {
     Tuna_Tuna("This will print")
+} Explode {
+    Tuna_Tuna("This will not print")
 }
 
 Kelp for loops 
-Twist (Tuna Rice Tuna 0; Rice < 10; Tuna Rice Tuna + 1) {
+Twist Tuna Tuna Rice Tuna 0 Tuna Rice < 10 Tuna Tuna Rice Tuna + 1 Tuna {
     Tuna_Tuna(Seaweed)
 }
 
 Kelp while loops 
-Plummet (Seaweed) {
+Plummet Tuna Seaweed Tuna {
     Tuna_Tuna("This will print")
     Tuna Seaweed Tuna Bonito_Flakes
 }
 
 Kelp functions 
-Tuna_Mayo Cod (Eel, Chicken) {
+Tuna_Mayo Cod Tuna Eel Chicken Tuna {
     Tuna_Tuna(Eel)
     Tuna_Tuna(Chicken)
+
+    Return Eel
 }
 
 Kelp builtin functions

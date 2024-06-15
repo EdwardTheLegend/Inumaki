@@ -5,7 +5,7 @@ TOKENS = {
     "RightBrace": "RightBrace",
     "LeftBracket": "LeftBracket",
     "RightBracket": "RightBracket",
-    "Period": "Period",
+    "Dot": "Dot",
     "Comma": "Comma",
     "Colon": "Colon",
     "Keyword": "Keyword",
@@ -39,7 +39,7 @@ chars = {
     "}": TOKENS["RightBrace"],
     "[": TOKENS["LeftBracket"],
     "]": TOKENS["RightBracket"],
-    ".": TOKENS["Period"],
+    ".": TOKENS["Dot"],
     ",": TOKENS["Comma"],
     ":": TOKENS["Colon"],
     "+": TOKENS["Plus"],
@@ -59,6 +59,7 @@ KEYWORDS = [
     "Tuna_Mayo",  # functions
     "Return",
     "Mustard_Leaf",  # conditionals
+    "Explode",
     "Twist",  # for loop
     "Plummet",  # while loop
 ]
