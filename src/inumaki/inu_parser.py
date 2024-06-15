@@ -20,15 +20,22 @@ class Parser:
 
     def eat(self, type):
         if type in TOKENS.keys():
-            if peek_type := self.peek().type == type:
+            if (peek_type := self.peek().type) == type:
                 self.pos += 1
                 return self.tokens[self.pos - 1]
         elif type in KEYWORDS:
-            if peek_type := self.peek().value == type:
+            if (peek_type := self.peek().value) == type:
                 self.pos += 1
                 return self.tokens[self.pos - 1]
 
         raise Exception(f"Expected {type}, got {peek_type}")
+    
+    def eat_keyword(self):
+        if self.peek().type == TOKENS["Keyword"]:
+            self.pos += 1
+            return self.tokens[self.pos - 1]
+        else:
+            raise Exception(f"Expected keyword, got {self.peek().type}")
 
     def term(self):
         if self.peek().type == TOKENS["Identifier"]:
@@ -87,7 +94,7 @@ class Parser:
         return left
 
     def parse(self):
-        while self.peek():
+        while self.peek().type != TOKENS["EOF"]:
             self.ast.append(self.parse_statement())
         return self.ast
 
@@ -115,7 +122,7 @@ class Parser:
     def variable_stmt(self):
         self.eat("Tuna")
         name = self.eat("Identifier")
-        self.eat("Tuna")
+        self.eat_keyword()
         value = self.expression()
 
         return Var(name, value)
@@ -123,11 +130,11 @@ class Parser:
     def function_stmt(self):
         self.eat("Tuna_Mayo")
         name = self.eat("Identifier")
-        self.eat("Tuna")
+        self.eat_keyword()
         params = []
-        while self.peek().type != TOKENS["Tuna"]:
+        while self.peek().type != TOKENS["Keyword"]:
             params.append(self.eat("Identifier"))
-        self.eat("Tuna")
+        self.eat_keyword()
 
         self.eat("LeftBrace")
         body = []
@@ -145,9 +152,9 @@ class Parser:
 
     def conditional_stmt(self):
         self.eat("Mustard_Leaf")
-        self.eat("Tuna")
+        self.eat_keyword()
         condition = self.expression()
-        self.eat("Tuna")
+        self.eat_keyword()
         self.eat("LeftBrace")
         body = []
         while self.peek().type != TOKENS["RightBrace"]:
@@ -166,15 +173,15 @@ class Parser:
 
     def for_stmt(self):
         self.eat("Twist")
-        self.eat("Tuna")
+        self.eat_keyword()
         var = self.parse_statement()
         if not isinstance(var, Var):
             raise Exception("Expected variable declaration in for loop")
-        self.eat("Tuna")
+        self.eat_keyword()
         condition = self.expression()
-        self.eat("Tuna")
+        self.eat_keyword()
         increment = self.parse_statement()
-        self.eat("Tuna")
+        self.eat_keyword()
 
         self.eat("LeftBrace")
         body = []
@@ -186,9 +193,9 @@ class Parser:
 
     def while_stmt(self):
         self.eat("Plummet")
-        self.eat("Tuna")
+        self.eat_keyword()
         condition = self.expression()
-        self.eat("Tuna")
+        self.eat_keyword()
         self.eat("LeftBrace")
         body = []
         while self.peek().type != TOKENS["RightBrace"]:
