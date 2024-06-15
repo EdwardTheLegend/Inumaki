@@ -18,7 +18,7 @@ def run(text):
     parser.parse()
 
     interpreter = Interpreter(parser.ast)
-    interpreter.interpret()
+    interpreter.run()
 
 
 if args.file:
