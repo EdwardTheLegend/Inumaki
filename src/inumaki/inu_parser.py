@@ -69,6 +69,8 @@ class Parser:
         elif self.peek().type == TOKENS["Not"]:
             self.eat("Not")
             return UnaryOp("!", self.term())
+        else:
+            raise Exception(f"Unexpected token {self.peek().type} while processing term")
 
     def expression(self):
         left = self.term()
@@ -116,6 +118,8 @@ class Parser:
                     return self.for_stmt()
                 case "Plummet":
                     return self.while_stmt()
+                case _:
+                    raise Exception(f"Unexpected keyword {next.value}")
         else:
             return self.expression()
 
