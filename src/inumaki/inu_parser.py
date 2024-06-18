@@ -1,9 +1,9 @@
-from inu_lexer import TOKENS, KEYWORDS
-from inu_ast import Var, Function, Return, Conditional, For, While, Call, UnaryOp, BinaryOp, Literal, Get
+from inu_ast import BinaryOp, Call, Conditional, For, Function, Get, Literal, Return, UnaryOp, Var, While
+from inu_lexer import KEYWORDS, TOKENS, Token
 
 
 class Parser:
-    def __init__(self, tokens):
+    def __init__(self, tokens: list[Token]):
         self.tokens = tokens
         self.pos = 0
         self.ast = []
@@ -29,7 +29,7 @@ class Parser:
                 return self.tokens[self.pos - 1]
 
         raise Exception(f"Expected {type}, got {peek_type}")
-    
+
     def eat_keyword(self):
         if self.peek().type == TOKENS["Keyword"]:
             self.pos += 1
@@ -39,7 +39,7 @@ class Parser:
 
     def term(self):
         if self.peek().type == TOKENS["Identifier"]:
-            name = self.eat("Identifier")
+            name = Get(self.eat("Identifier"), None)
             while self.peek().type in [TOKENS["Dot"], TOKENS["LeftParen"]]:
                 if self.peek().type == TOKENS["Dot"]:
                     self.eat("Dot")
@@ -104,7 +104,6 @@ class Parser:
         next = self.peek()
 
         if next.type == TOKENS["Keyword"]:
-
             match next.value:
                 case "Tuna":
                     return self.variable_stmt()
