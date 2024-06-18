@@ -1,4 +1,4 @@
-from inu_ast import BinaryOp, Call, Conditional, For, Function, Get, Literal, Return, UnaryOp, Var, While
+from inu_ast import BinaryOp, Call, Conditional, For, Function, Get, Literal, Return, UnaryOp, Var, While, Set
 from inu_lexer import KEYWORDS, TOKENS, Token
 
 
@@ -39,7 +39,7 @@ class Parser:
 
     def term(self):
         if self.peek().type == TOKENS["Identifier"]:
-            name = Get(self.eat("Identifier"), None)
+            name = Var(self.eat("Identifier").value)
             while self.peek().type in [TOKENS["Dot"], TOKENS["LeftParen"]]:
                 if self.peek().type == TOKENS["Dot"]:
                     self.eat("Dot")
@@ -57,7 +57,7 @@ class Parser:
             return name
 
         elif self.peek().type in [TOKENS["Number"], TOKENS["Boolean"], TOKENS["String"]]:
-            return Literal(self.eat(self.peek().type).value)
+            return Literal(self.eat(self.peek().type).content)
         elif self.peek().type == TOKENS["LeftParen"]:
             self.eat("LeftParen")
             expr = self.expression()
@@ -106,7 +106,7 @@ class Parser:
         if next.type == TOKENS["Keyword"]:
             match next.value:
                 case "Tuna":
-                    return self.variable_stmt()
+                    return self.assign_stmt()
                 case "Tuna_Mayo":
                     return self.function_stmt()
                 case "Return":
@@ -122,13 +122,13 @@ class Parser:
         else:
             return self.expression()
 
-    def variable_stmt(self):
+    def assign_stmt(self):
         self.eat("Tuna")
         name = self.eat("Identifier")
         self.eat_keyword()
         value = self.expression()
 
-        return Var(name, value)
+        return Set(name, value)
 
     def function_stmt(self):
         self.eat("Tuna_Mayo")
@@ -178,7 +178,7 @@ class Parser:
         self.eat("Twist")
         self.eat_keyword()
         var = self.parse_statement()
-        if not isinstance(var, Var):
+        if not isinstance(var, Set):
             raise Exception("Expected variable declaration in for loop")
         self.eat_keyword()
         condition = self.expression()
