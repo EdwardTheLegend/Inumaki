@@ -30,5 +30,10 @@ Tuna_Mayo Cod Tuna Eel Chicken Tuna {
     Return Eel
 }
 
+Cod("My", "Function")
+Tuna Tomato Tuna Cod("Also", "Works")
+Tuna_Tuna(Tomato)
+
 Kelp builtin functions
 Tuna_Tuna("Hello, World!") Kelp prints "Hello, World!" to the console
+Tuna_Tuna(2*6)
