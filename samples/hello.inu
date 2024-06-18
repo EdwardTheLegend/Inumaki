@@ -12,7 +12,7 @@ Mustard_Leaf Tuna 1 == 1 And Seaweed Tuna {
 }
 
 Kelp for loops 
-Twist Tuna Tuna Rice Tuna 0 Tuna Rice < 10 Tuna Tuna Rice Tuna + 1 Tuna {
+Twist Tuna Tuna Rice Tuna 0 Tuna Rice < 10 Tuna Tuna Rice Tuna Rice + 1 Tuna {
     Tuna_Tuna(Seaweed)
 }
 
