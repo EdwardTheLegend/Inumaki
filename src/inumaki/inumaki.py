@@ -3,6 +3,7 @@ import argparse
 from inu_interpreter import Interpreter
 from inu_lexer import Lexer
 from inu_parser import Parser
+from inu_stdlib import inu_stdlib
 
 parser = argparse.ArgumentParser(prog="inumaki", description="Inumkai programming language")
 parser.add_argument("file", type=str, help="Inumaki source code file", nargs="?", default=None)
@@ -17,7 +18,7 @@ def run(text):
     parser = Parser(lexer.tokens)
     parser.parse()
 
-    interpreter = Interpreter(parser.ast)
+    interpreter = Interpreter(parser.ast, scope=inu_stdlib)
     interpreter.run()
 
 
