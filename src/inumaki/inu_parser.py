@@ -96,6 +96,7 @@ class Parser:
             TOKENS["Minus"],
             TOKENS["Asterisk"],
             TOKENS["Slash"],
+            TOKENS["Modulo"],
             TOKENS["Equiv"],
             TOKENS["NotEquiv"],
             TOKENS["Lt"],

@@ -86,6 +86,8 @@ class Interpreter:
                         return left >= right
                     case "<=":
                         return left <= right
+                    case "%":
+                        return left % right
                     case "And":
                         return left and right
                     case "Or":

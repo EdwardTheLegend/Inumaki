@@ -25,6 +25,7 @@ TOKENS = {
     "Plus": "Plus",
     "Minus": "Minus",
     "Asterisk": "Asterisk",
+    "Modulo": "Modulo",
     "Slash": "Slash",
     "Semicolon": "Semicolon",
     "EOF": "EOF",
@@ -46,6 +47,7 @@ chars = {
     "-": TOKENS["Minus"],
     "*": TOKENS["Asterisk"],
     "/": TOKENS["Slash"],
+    "%": TOKENS["Modulo"],
     "<": TOKENS["Lt"],
     "<=": TOKENS["Lte"],
     ">": TOKENS["Gt"],
@@ -158,7 +160,7 @@ class Lexer:
         char = self.advance()
 
         match char:
-            case "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | "+" | "-" | "*" | "/" | ";":
+            case "(" | ")" | "{" | "}" | "[" | "]" | "." | "," | ":" | "+" | "-" | "*" | "/" | "%" | ";":
                 self.tokens.append(Token(chars[char], char, char, self.line, self.column))
             case "<" | ">":
                 if self.match("="):
