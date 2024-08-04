@@ -62,6 +62,7 @@ KEYWORDS = [
     "Explode",
     "Twist",  # for loop
     "Plummet",  # while loop
+    "Cough_Syrup",
 ]
 
 CURSED_WORDS = [

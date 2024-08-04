@@ -1,4 +1,18 @@
-from inu_ast import BinaryOp, Call, Conditional, For, Function, Get, Literal, Return, UnaryOp, Var, While, Set
+from inu_ast import (
+    BinaryOp,
+    Call,
+    Conditional,
+    For,
+    Function,
+    Get,
+    Literal,
+    Return,
+    UnaryOp,
+    Var,
+    While,
+    Set,
+    CoughSyrup,
+)
 from inu_lexer import KEYWORDS, TOKENS, Token
 
 
@@ -119,6 +133,8 @@ class Parser:
                     return self.for_stmt()
                 case "Plummet":
                     return self.while_stmt()
+                case "Cough_Syrup":
+                    return self.cough_syrup()
                 case _:
                     raise Exception(f"Unexpected keyword {next.value}")
         else:
@@ -217,3 +233,7 @@ class Parser:
         self.eat("RightBrace")
 
         return While(condition, body, cursed)
+
+    def cough_syrup(self):
+        self.eat("Cough_Syrup")
+        return CoughSyrup()

@@ -106,3 +106,7 @@ class Literal:
         self.cursed = cursed
 
     __match_args__ = ("value", "cursed")
+
+
+class CoughSyrup:
+    pass

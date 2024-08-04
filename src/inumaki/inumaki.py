@@ -18,7 +18,7 @@ def run(text):
     parser = Parser(lexer.tokens)
     parser.parse()
 
-    interpreter = Interpreter(parser.ast, scope=inu_stdlib)
+    interpreter = Interpreter(parser.ast, scope=inu_stdlib, cursed=0)
     interpreter.run()
 
 
