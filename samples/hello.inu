@@ -31,9 +31,9 @@ Tuna_Mayo Cod Tuna Eel Chicken Tuna {
 }
 
 Cod("My", "Function")
-Tuna Tomato Tuna Cod("Also", "Works")
+Tuna Tomato Tuna Cod("Also", "Works") Kelp storing return value of a function
 Tuna_Tuna(Tomato)
 
 Kelp builtin functions
 Tuna_Tuna("Hello, World!") Kelp prints "Hello, World!" to the console
-Tuna_Tuna(2*6)
+Tuna_Tuna(2*6+2-3) Kelp basic arithmetic operators (no order of operations sorry)

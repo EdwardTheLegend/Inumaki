@@ -6,10 +6,10 @@ class Interpreter:
         def __init__(self, value):
             self.value = value
 
-    def __init__(self, ast, scope):
+    def __init__(self, ast, scope, cursed=0):
         self.ast = ast
         self.scope = scope
-        self.cursed = 0
+        self.cursed = cursed
 
     def run(self):
         for node in self.ast:
@@ -20,12 +20,17 @@ class Interpreter:
     def run_block(self, block, scope=None):
         if scope is None:
             scope = self.scope
-        interpreter = Interpreter(block, scope)
-        self.scope = interpreter.run()
+        interpreter = Interpreter(block, scope, cursed=self.cursed)
+        try:
+            self.scope = interpreter.run()
+        except self.ReturnException as e:
+            self.cursed = interpreter.cursed
+            raise self.ReturnException(e.value)
 
     def evaluate(self, node):
         match node:
-            case Var(name):
+            case Var(name, cursed):
+                self.cursed += cursed
                 return self.scope[name]
             case UnaryOp(op, right):
                 if op == "Not":
@@ -63,7 +68,8 @@ class Interpreter:
                         return left or right
                     case _:
                         raise Exception(f"Unknown binary operator {op}")
-            case Literal(value):
+            case Literal(value, cursed):
+                self.cursed += cursed
                 return value
             case Call(name, args):
                 func = self.evaluate(name)
@@ -77,9 +83,11 @@ class Interpreter:
 
     def execute(self, node):
         match node:
-            case Set(name, value):
+            case Set(name, value, cursed):
+                self.cursed += cursed
                 self.scope[name.value] = self.evaluate(value)
-            case Function(name, params, body):
+            case Function(name, params, body, cursed):
+                self.cursed += cursed
 
                 def function(*args):
                     try:
@@ -88,19 +96,23 @@ class Interpreter:
                         return e.value
 
                 self.scope[name.value] = function
-            case Return(value):
+            case Return(value, cursed):
+                self.cursed += cursed
                 raise self.ReturnException(self.evaluate(value))
-            case Conditional(condition, body, else_body):
+            case Conditional(condition, body, else_body, cursed):
+                self.cursed += cursed
                 if self.evaluate(condition):
                     self.run_block(body)
                 else:
                     self.run_block(else_body)
-            case For(variable, condition, increment, body):
+            case For(variable, condition, increment, body, cursed):
+                self.cursed += cursed
                 self.run_block([variable])
                 while self.evaluate(condition):
                     self.run_block(body)
                     self.execute(increment)
-            case While(condition, body):
+            case While(condition, body, cursed):
+                self.cursed += cursed
                 while self.evaluate(condition):
                     self.run_block(body)
             case _:

@@ -133,7 +133,7 @@ class Lexer:
     def start_word(self, char):
         word = char
         column = self.column
-        while self.peek().isalnum() or self.peek() == "_":
+        while self.peek() and (self.peek().isalnum() or self.peek() == "_"):
             word += self.advance()
 
         match word:
@@ -141,7 +141,7 @@ class Lexer:
                 self.tokens.append(Token(TOKENS[word], word, word, self.line, column))
                 return
             case "Kelp":
-                while self.peek() != "\n":
+                while self.peek() and self.peek() != "\n":
                     self.advance()
                 return
             case "Salmon" | "Bonito_Flakes":
@@ -186,7 +186,7 @@ class Lexer:
             case _:
                 if char.isdigit():
                     number = char
-                    while self.peek().isdigit() or (self.peek() == "." and self.peekn(1).isdigit()):
+                    while self.peek() and (self.peek().isdigit() or (self.peek() == "." and self.peekn(1).isdigit())):
                         number += self.advance()
 
                     self.tokens.append(Token(TOKENS["Number"], number, float(number), self.line, self.column))

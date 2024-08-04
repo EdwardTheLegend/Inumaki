@@ -39,7 +39,8 @@ class Parser:
 
     def term(self):
         if self.peek().type == TOKENS["Identifier"]:
-            name = Var(self.eat("Identifier").value)
+            var = self.eat("Identifier")
+            name = Var(var.value, var.cursed)
             while self.peek().type in [TOKENS["Dot"], TOKENS["LeftParen"]]:
                 if self.peek().type == TOKENS["Dot"]:
                     self.eat("Dot")
@@ -57,7 +58,8 @@ class Parser:
             return name
 
         elif self.peek().type in [TOKENS["Number"], TOKENS["Boolean"], TOKENS["String"]]:
-            return Literal(self.eat(self.peek().type).content)
+            literal = self.eat(self.peek().type)
+            return Literal(literal.content, literal.cursed)
         elif self.peek().type == TOKENS["LeftParen"]:
             self.eat("LeftParen")
             expr = self.expression()
@@ -125,19 +127,24 @@ class Parser:
     def assign_stmt(self):
         self.eat("Tuna")
         name = self.eat("Identifier")
-        self.eat_keyword()
+        kw = self.eat_keyword()
         value = self.expression()
 
-        return Set(name, value)
+        cursed = name.cursed + kw.cursed
+
+        return Set(name, value, cursed)
 
     def function_stmt(self):
+        cursed = 0
         self.eat("Tuna_Mayo")
         name = self.eat("Identifier")
-        self.eat_keyword()
+        cursed += name.cursed
+        cursed += self.eat_keyword().cursed
         params = []
         while self.peek().type != TOKENS["Keyword"]:
             params.append(self.eat("Identifier"))
-        self.eat_keyword()
+            cursed += params[-1].cursed
+        cursed += self.eat_keyword().cursed
 
         self.eat("LeftBrace")
         body = []
@@ -145,19 +152,20 @@ class Parser:
             body.append(self.parse_statement())
         self.eat("RightBrace")
 
-        return Function(name, params, body)
+        return Function(name, params, body, cursed)
 
     def return_stmt(self):
         self.eat("Return")
         value = self.expression()
 
-        return Return(value)
+        return Return(value, cursed=1)
 
     def conditional_stmt(self):
+        cursed = 0
         self.eat("Mustard_Leaf")
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
         condition = self.expression()
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
         self.eat("LeftBrace")
         body = []
         while self.peek().type != TOKENS["RightBrace"]:
@@ -166,25 +174,27 @@ class Parser:
         else_body = None
         if self.peek().value == "Explode":
             self.eat("Explode")
+            cursed += 1
             self.eat("LeftBrace")
             else_body = []
             while self.peek().type != TOKENS["RightBrace"]:
                 else_body.append(self.parse_statement())
             self.eat("RightBrace")
 
-        return Conditional(condition, body, else_body)
+        return Conditional(condition, body, else_body, cursed)
 
     def for_stmt(self):
         self.eat("Twist")
-        self.eat_keyword()
+        cursed = 1
+        cursed += self.eat_keyword().cursed
         var = self.parse_statement()
         if not isinstance(var, Set):
             raise Exception("Expected variable declaration in for loop")
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
         condition = self.expression()
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
         increment = self.parse_statement()
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
 
         self.eat("LeftBrace")
         body = []
@@ -192,17 +202,18 @@ class Parser:
             body.append(self.parse_statement())
         self.eat("RightBrace")
 
-        return For(var, condition, increment, body)
+        return For(var, condition, increment, body, cursed)
 
     def while_stmt(self):
         self.eat("Plummet")
-        self.eat_keyword()
+        cursed = 1
+        cursed += self.eat_keyword().cursed
         condition = self.expression()
-        self.eat_keyword()
+        cursed += self.eat_keyword().cursed
         self.eat("LeftBrace")
         body = []
         while self.peek().type != TOKENS["RightBrace"]:
             body.append(self.parse_statement())
         self.eat("RightBrace")
 
-        return While(condition, body)
+        return While(condition, body, cursed)
