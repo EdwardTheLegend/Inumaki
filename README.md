@@ -21,7 +21,7 @@ These are the phrases which will be used in place of normal keywords in this lan
 ## Cursed Speech
 | Word | Language use|
 | --- | --- |
-| Explode | |
+| Explode | Else |
 | Twist | For loops |
 | Crush | |
 | Plummet | While loops |
