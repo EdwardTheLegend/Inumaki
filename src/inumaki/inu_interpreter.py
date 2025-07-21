@@ -19,12 +19,12 @@ from inu_exceptions import (
     create_division_by_zero_error,
     create_invalid_operator_error,
     create_function_call_error,
-    InumakiRuntimeError
+    InumakiRuntimeError,
+    CURSED_SPEECH_THRESHOLD
 )
 
 
 class Interpreter:
-    CursedThreshold = 100
 
     class ReturnException(Exception):
         def __init__(self, value):
@@ -39,8 +39,8 @@ class Interpreter:
         for node in self.ast:
             self.execute(node)
             # print(f"Current cursed count: {self.cursed}")  # Debug statement
-            if self.cursed > Interpreter.CursedThreshold:
-                raise CursedSpeechOverloadError(self.cursed, Interpreter.CursedThreshold)
+            if self.cursed > CURSED_SPEECH_THRESHOLD:
+                raise CursedSpeechOverloadError(self.cursed, CURSED_SPEECH_THRESHOLD)
         return self.scope
 
     def run_block(self, block, scope=None):

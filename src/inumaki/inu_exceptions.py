@@ -5,6 +5,9 @@ This module provides structured exception classes with descriptive error message
 context information, and helpful suggestions for common issues.
 """
 
+# Constants
+CURSED_SPEECH_THRESHOLD = 100  # Maximum allowed cursed speech usage before throat irritation
+
 
 class InumakiException(Exception):
     """Base exception class for all Inumaki interpreter errors."""
@@ -66,7 +69,7 @@ class InumakiArithmeticError(InumakiRuntimeError):
 class CursedSpeechOverloadError(InumakiRuntimeError):
     """Raised when the cursed speech threshold is exceeded."""
     
-    def __init__(self, cursed_count, threshold=100):
+    def __init__(self, cursed_count, threshold=CURSED_SPEECH_THRESHOLD):
         super().__init__(
             message=f"Throat irritation from excessive cursed speech usage! ({cursed_count}/{threshold})",
             suggestion="Use 'Cough_Syrup' to reset cursed speech counter and soothe the throat"
