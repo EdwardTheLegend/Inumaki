@@ -14,6 +14,7 @@ from inu_ast import (
     CoughSyrup,
 )
 from inu_lexer import KEYWORDS, TOKENS, Token
+from inu_exceptions import create_unexpected_token_error
 
 
 class Parser:
@@ -33,23 +34,25 @@ class Parser:
         return self.tokens[self.pos + n]
 
     def eat(self, type):
+        current_token = self.peek()
         if type in TOKENS.keys():
-            if (peek_type := self.peek().type) == type:
+            if (peek_type := current_token.type) == type:
                 self.pos += 1
                 return self.tokens[self.pos - 1]
         elif type in KEYWORDS:
-            if (peek_type := self.peek().value) == type:
+            if (peek_type := current_token.value) == type:
                 self.pos += 1
                 return self.tokens[self.pos - 1]
 
-        raise Exception(f"Expected {type}, got {peek_type}")
+        raise create_unexpected_token_error(type, peek_type, current_token.line, current_token.column)
 
     def eat_keyword(self):
-        if self.peek().type == TOKENS["Keyword"]:
+        current_token = self.peek()
+        if current_token.type == TOKENS["Keyword"]:
             self.pos += 1
             return self.tokens[self.pos - 1]
         else:
-            raise Exception(f"Expected keyword, got {self.peek().type}")
+            raise create_unexpected_token_error("Keyword", current_token.type, current_token.line, current_token.column)
 
     def term(self):
         if self.peek().type == TOKENS["Identifier"]:
@@ -86,7 +89,8 @@ class Parser:
             self.eat("Not")
             return UnaryOp("!", self.term())
         else:
-            raise Exception(f"Unexpected token {self.peek().type} while processing term")
+            current_token = self.peek()
+            raise create_unexpected_token_error("expression", current_token.type, current_token.line, current_token.column)
 
     def expression(self):
         left = self.term()
@@ -137,7 +141,7 @@ class Parser:
                 case "Cough_Syrup":
                     return self.cough_syrup()
                 case _:
-                    raise Exception(f"Unexpected keyword {next.value}")
+                    raise create_unexpected_token_error("valid keyword", next.value, next.line, next.column)
         else:
             return self.expression()
 
@@ -206,7 +210,11 @@ class Parser:
         cursed += self.eat_keyword().cursed
         var = self.parse_statement()
         if not isinstance(var, Set):
-            raise Exception("Expected variable declaration in for loop")
+            from inu_exceptions import InumakiParseError
+            raise InumakiParseError(
+                message="Expected variable declaration in for loop",
+                suggestion="Use 'Tuna <variable> Tuna <value>' to declare the loop variable"
+            )
         cursed += self.eat_keyword().cursed
         condition = self.expression()
         cursed += self.eat_keyword().cursed

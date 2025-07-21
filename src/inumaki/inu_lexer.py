@@ -1,3 +1,5 @@
+from inu_exceptions import create_invalid_character_error, create_unterminated_string_error
+
 TOKENS = {
     "LeftParen": "LeftParen",
     "RightParen": "RightParen",
@@ -171,13 +173,13 @@ class Lexer:
                 if self.match("="):
                     self.tokens.append(Token(TOKENS["Equiv"], "==", "==", self.line, self.column))
                 else:
-                    raise Exception(f"Invalid character '=' at line {self.line}")
+                    raise create_invalid_character_error("=", self.line, self.column)
             case "'" | '"':
                 string = ""
                 while self.peek() != char:
                     string += self.advance()
                     if not self.peek():
-                        raise Exception(f"Unterminated string at line {self.line}")
+                        raise create_unterminated_string_error(self.line, self.column)
 
                 self.advance()  # closing quote
                 self.tokens.append(Token(TOKENS["String"], string, string, self.line, self.column))
@@ -196,7 +198,7 @@ class Lexer:
                 elif char.isalpha() or char == "_":  # Gather the whole word
                     self.start_word(char)
                 else:
-                    raise Exception(f"Invalid character '{char}' at line {self.line}")
+                    raise create_invalid_character_error(char, self.line, self.column)
 
     def scan_tokens(self):
         while self.peek():

@@ -13,18 +13,22 @@ from inu_ast import (
     Set,
     CoughSyrup,
 )
+from inu_exceptions import (
+    CursedSpeechOverloadError, 
+    create_undefined_variable_error, 
+    create_division_by_zero_error,
+    create_invalid_operator_error,
+    create_function_call_error,
+    InumakiRuntimeError,
+    CURSED_SPEECH_THRESHOLD
+)
 
 
 class Interpreter:
-    CursedThreshold = 100
 
     class ReturnException(Exception):
         def __init__(self, value):
             self.value = value
-
-    class CursedException(Exception):
-        def __init__(self):
-            super().__init__("Throat irritation from excessive cursed speech usage")
 
     def __init__(self, ast, scope, cursed):
         self.ast = ast
@@ -35,8 +39,8 @@ class Interpreter:
         for node in self.ast:
             self.execute(node)
             # print(f"Current cursed count: {self.cursed}")  # Debug statement
-            if self.cursed > Interpreter.CursedThreshold:
-                raise self.CursedException()
+            if self.cursed > CURSED_SPEECH_THRESHOLD:
+                raise CursedSpeechOverloadError(self.cursed, CURSED_SPEECH_THRESHOLD)
         return self.scope
 
     def run_block(self, block, scope=None):
@@ -56,6 +60,8 @@ class Interpreter:
             case Var(name, cursed):
                 self.cursed += cursed
                 # print(f"Evaluating Var: {name}, cursed: {self.cursed}")  # Debug statement
+                if name not in self.scope:
+                    raise create_undefined_variable_error(name)
                 return self.scope[name]
             case UnaryOp(op, right):
                 if op == "Not":
@@ -73,6 +79,8 @@ class Interpreter:
                     case "*":
                         return left * right
                     case "/":
+                        if right == 0:
+                            raise create_division_by_zero_error()
                         return left / right
                     case "==":
                         return left == right
@@ -93,20 +101,33 @@ class Interpreter:
                     case "Or":
                         return left or right
                     case _:
-                        raise Exception(f"Unknown binary operator {op}")
+                        raise create_invalid_operator_error(op.value)
             case Literal(value, cursed):
                 self.cursed += cursed
                 # print(f"Evaluating Literal: {value}, cursed: {self.cursed}")  # Debug statement
                 return value
             case Call(name, args):
-                func = self.evaluate(name)
-                return func(*[self.evaluate(arg) for arg in args])
+                try:
+                    func = self.evaluate(name)
+                    return func(*[self.evaluate(arg) for arg in args])
+                except Exception as e:
+                    func_name = name.name if hasattr(name, 'name') else str(name)
+                    raise create_function_call_error(func_name, str(e))
             case Get(obj, prop):
-                obj = self.evaluate(obj)
-                prop = self.evaluate(prop)
-                return obj[prop]
+                try:
+                    obj = self.evaluate(obj)
+                    prop = self.evaluate(prop)
+                    return obj[prop]
+                except (KeyError, IndexError, TypeError) as e:
+                    raise InumakiRuntimeError(
+                        message=f"Cannot access property/index: {str(e)}",
+                        suggestion="Check that the object exists and the property/index is valid"
+                    )
             case _:
-                raise Exception(f"Unknown node {node}")
+                raise InumakiRuntimeError(
+                    message=f"Unknown expression node: {type(node).__name__}",
+                    suggestion="This may be an internal interpreter error"
+                )
 
     def execute(self, node):
         match node:

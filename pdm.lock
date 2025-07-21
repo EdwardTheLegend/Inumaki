@@ -4,8 +4,11 @@
 [metadata]
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
-lock_version = "4.4.1"
-content_hash = "sha256:acd8d3f4bee34dd21872ed869a5d49f98407940284e2e09df4dc53c371d1483d"
+lock_version = "4.5.0"
+content_hash = "sha256:cecb2b915a84fb12a1b468f29f9b98235b9972f0e246fd94086fa512a176ce0b"
+
+[[metadata.targets]]
+requires_python = "==3.12.*"
 
 [[package]]
 name = "argparse"
